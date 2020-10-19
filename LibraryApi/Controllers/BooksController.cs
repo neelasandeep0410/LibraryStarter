@@ -1,8 +1,8 @@
-﻿
-using AutoMapper;
+﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using LibraryApi.Domain;
 using LibraryApi.Models.Books;
+using LibraryApi.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -18,12 +18,14 @@ namespace LibraryApi.Controllers
         private LibraryDataContext _context;
         private IMapper _mapper;
         private MapperConfiguration _mapperConfig;
+        private IQueryForBooks _booksQuery;
 
-        public BooksController(LibraryDataContext context, IMapper mapper, MapperConfiguration mapperConfig)
+        public BooksController(LibraryDataContext context, IMapper mapper, MapperConfiguration mapperConfig, IQueryForBooks booksQuery)
         {
-            _context = context;
-            _mapper = mapper;
-            _mapperConfig = mapperConfig;
+            _context = context ?? throw new ArgumentNullException(nameof(context));
+            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+            _mapperConfig = mapperConfig ?? throw new ArgumentNullException(nameof(mapperConfig));
+            _booksQuery = booksQuery ?? throw new ArgumentNullException(nameof(booksQuery));
         }
 
         [HttpPut("books/{bookId:int}/title")]
@@ -98,13 +100,7 @@ namespace LibraryApi.Controllers
         [Produces("application/json")]
         public async Task<ActionResult<GetBooksResponse>> GetAllBooks()
         {
-            var response = new GetBooksResponse();
-
-            var books = await _context.BooksInInventory()
-                .ProjectTo<GetBooksResponseItem>(_mapperConfig)
-                .ToListAsync();
-
-            response.Data = books;
+            GetBooksResponse response = await _booksQuery.GetAllBooks();
 
             return Ok(response);
 
@@ -121,10 +117,7 @@ namespace LibraryApi.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<GetBookDetailsResponse>> GetBookById([FromRoute] int bookId)
         {
-            var book = await _context.BooksInInventory()
-                .Where(b => b.Id == bookId)
-                .ProjectTo<GetBookDetailsResponse>(_mapperConfig)
-                .SingleOrDefaultAsync();
+            GetBookDetailsResponse book = await _booksQuery.GetBookById(bookId);
 
             if (book == null)
             {

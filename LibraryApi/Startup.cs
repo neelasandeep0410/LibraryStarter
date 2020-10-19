@@ -35,7 +35,7 @@ namespace LibraryApi
             services.AddTransient<ISystemTime, SystemTime>(); // create a brand new instance any time it's needed.
             // services.AddScoped<ISystemTime, SystemTime>(); // create exactly one of these PER REQUEST.
             // services.AddSingleton<ISystemTime, SystemTime>(); // Create exactly one of these and share it like a cheap bottle of wine with anybody that needs it.
-
+            services.AddScoped<IQueryForBooks, EfLibraryData>();
             services.AddDbContext<LibraryDataContext>(options =>
             {
                 options.UseSqlServer(Configuration.GetConnectionString("library"));
