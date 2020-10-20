@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace LibraryApi.Models.Reservations
+namespace LibraryApi.Domain
 {
-    public class ReservationDetailsResponse
+    public class Reservation
     {
         public int Id { get; set; }
         public string For { get; set; }

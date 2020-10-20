@@ -44,6 +44,7 @@ namespace LibraryApi
             var mapperConfig = new MapperConfiguration(opt =>
             {
                 opt.AddProfile<BooksProfile>();
+                opt.AddProfile<ReservationsProfile>();
             });
 
             IMapper mapper = mapperConfig.CreateMapper();
