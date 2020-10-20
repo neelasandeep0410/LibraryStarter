@@ -51,6 +51,15 @@ namespace LibraryApi
             services.AddSingleton<IMapper>(mapper);
             services.AddSingleton<MapperConfiguration>(mapperConfig);
 
+            services.AddScoped<IQueryForBooks, EfLibraryData>();
+            services.AddScoped<IDoBookCommands, EfLibraryData>();
+
+            services.AddDistributedRedisCache(options =>
+            {
+                options.Configuration = Configuration.GetConnectionString("redis");
+            });
+            services.AddTransient<ICacheTheCatalog, CatalogService>();
+
             services.AddSwaggerGen(c => {
                 c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
                 {
