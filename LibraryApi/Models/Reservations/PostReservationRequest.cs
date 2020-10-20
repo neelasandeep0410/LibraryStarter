@@ -10,4 +10,8 @@ namespace LibraryApi.Models.Reservations
         public string For { get; set; }
         public string Items { get; set; }
     }
+<<<<<<< HEAD
+=======
+
+>>>>>>> upstream/master
 }
