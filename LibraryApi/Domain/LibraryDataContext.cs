@@ -13,12 +13,15 @@ namespace LibraryApi.Domain
 
         }
         public virtual DbSet<Book> Books { get; set; }
+        public virtual DbSet<Reservation> Reservations { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Book>().Property(p => p.Title).HasMaxLength(200);
             modelBuilder.Entity<Book>().Property(p => p.Author).HasMaxLength(200);
-            
+
+            modelBuilder.Entity<Reservation>().Property(p => p.For).HasMaxLength(200);
+            modelBuilder.Entity<Reservation>().Property(p => p.Items).HasMaxLength(200);
         }
 
         public virtual IQueryable<Book> BooksInInventory()

@@ -10,8 +10,8 @@ namespace LibraryApi.Controllers
     public class BooksController : ControllerBase
     {
 
-        private IQueryForBooks _booksQuery;
-        private IDoBookCommands _bookCommands;
+        private readonly IQueryForBooks _booksQuery;
+        private readonly IDoBookCommands _bookCommands;
 
         public BooksController(IQueryForBooks booksQuery, IDoBookCommands bookCommands)
         {
