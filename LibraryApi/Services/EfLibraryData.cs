@@ -3,35 +3,19 @@ using AutoMapper.QueryableExtensions;
 using LibraryApi.Domain;
 using LibraryApi.Models.Books;
 using Microsoft.EntityFrameworkCore;
-<<<<<<< HEAD
 using System;
 using System.Collections.Generic;
-=======
->>>>>>> upstream/master
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace LibraryApi.Services
 {
-<<<<<<< HEAD
-    public class EfLibraryData : IQueryForBooks
-    {
-=======
     public class EfLibraryData : IQueryForBooks, IDoBookCommands
     {
 
->>>>>>> upstream/master
         private readonly LibraryDataContext _context;
         private readonly IMapper _mapper;
         private readonly MapperConfiguration _mapperConfig;
-
-<<<<<<< HEAD
-        public EfLibraryData(LibraryDataContext libraryDataContext, IMapper mapper, MapperConfiguration mapperConfiguration)
-        {
-            this._context = libraryDataContext;
-            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
-            this._mapperConfig = mapperConfiguration ?? throw new ArgumentNullException(nameof(mapperConfiguration));
-=======
         public EfLibraryData(LibraryDataContext context, IMapper mapper, MapperConfiguration mapperConfig)
         {
             _context = context;
@@ -50,7 +34,6 @@ namespace LibraryApi.Services
             // book.Id = 8;
             var response = _mapper.Map<GetBookDetailsResponse>(book); // Book -> GetBookDetailsResponse;
             return response;
->>>>>>> upstream/master
         }
 
         public async Task<GetBooksResponse> GetAllBooks()
@@ -68,21 +51,15 @@ namespace LibraryApi.Services
         public async Task<GetBookDetailsResponse> GetBookById(int bookId)
         {
             var book = await _context.BooksInInventory()
-<<<<<<< HEAD
+
                  .Where(b => b.Id == bookId)
                  .ProjectTo<GetBookDetailsResponse>(_mapperConfig)
                  .SingleOrDefaultAsync();
 
             return book;
         }
-    }
-}
-=======
-               .Where(b => b.Id == bookId)
-               .ProjectTo<GetBookDetailsResponse>(_mapperConfig)
-               .SingleOrDefaultAsync();
-            return book;
-        }
+
+
 
         public async Task RemoveBook(int bookId)
         {
@@ -114,4 +91,3 @@ namespace LibraryApi.Services
         }
     }
 }
->>>>>>> upstream/master
